@@ -1,7 +1,8 @@
 import { Loader } from "@mantine/core";
 import React, { useState } from "react";
 
-export async function loadWikiDungenInfo({ params }) {
+export async function loadWikiDungenInfo(pageTitle) {
+    console.log(pageTitle)
     try {
         const response = await fetch(
             "https://en.wikipedia.org/api/rest_v1/page/random/summary"
@@ -26,9 +27,10 @@ function Game({
     const pagedata = loaderData;
 
     return (
-        <>
+        <div>
+            <h1>Asdfadsfdasf</h1>
            <div>{JSON.stringify(pagedata)}</div>
-        </>
+        </div>
     );
 }
 
