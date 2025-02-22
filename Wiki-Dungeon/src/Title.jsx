@@ -19,17 +19,7 @@ const interestingPages = [
 
 
 export default function Title() {
-<<<<<<< HEAD
-    return (
-      <div className="title-container">
-        <div className="title-content">
-          <h1>Wikipedia Dungeon</h1>
-          <p>Explore the depths of knowledge, one Wiki at a time!</p>
-          <Link to="/Game">
-            <button className="enter-button">Enter the Dungeon</button>
-          </Link>
-        </div>
-=======
+
   const navigate = useNavigate();
 
   const getRandomPage = () => {
@@ -43,7 +33,6 @@ export default function Title() {
         <h1>Wikipedia Dungeon</h1>
         <p>Explore the depths of knowledge, one page at a time!</p>
         <Button onClick={getRandomPage} className="enter-button">Go To Random Start</Button>
->>>>>>> 75d3c09c3e086ff02637093d3aa61e7f9ae00838
       </div>
     </div>
   );
