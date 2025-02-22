@@ -1,5 +1,5 @@
 import { Loader } from "@mantine/core";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 
 export async function loadWikiDungenInfo(pageTitle) {
     console.log(pageTitle)
@@ -29,7 +29,7 @@ function Game({
     return (
         <div>
             <h1>Asdfadsfdasf</h1>
-           <div>{JSON.stringify(pagedata)}</div>
+            <div>{JSON.stringify(pagedata)}</div>
         </div>
     );
 }
