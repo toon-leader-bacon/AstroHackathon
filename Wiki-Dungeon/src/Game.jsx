@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import { Loader } from "@mantine/core";
+import React, { Suspense, useState } from "react";
 
-export async function loadWikiDungenInfo({ params }) {
+export async function loadWikiDungenInfo(pageTitle) {
+    console.log(pageTitle)
     try {
         const response = await fetch(
             "https://en.wikipedia.org/api/rest_v1/page/random/summary"
@@ -13,34 +15,21 @@ export async function loadWikiDungenInfo({ params }) {
     }
 }
 
-function Game() {
-    const [title, setTitle] = useState("");
-    const [summary, setSummary] = useState("");
-    const [imageUrl, setImageUrl] = useState("");
+// HydrateFallback is rendered while the client loader is running
+export function HydrateFallback() {
+  return <Loader color="blue" type="dots" />;
+}
 
-    const fetchWikiPage = async () => {
-        try {
-            const response = await fetch(
-                "https://en.wikipedia.org/api/rest_v1/page/random/summary"
-            );
-            const page = await response.json();
-
-            setTitle(page.title);
-            setSummary(page.extract);
-
-            // Generate an AI image based on the title
-            generateImage(page.title);
-        } catch (error) {
-            console.error("Error fetching Wikipedia page:", error);
-        }
-    };
+function Game({
+  loaderData,
+}) {
+    const [pageHistory, setPageHistory] = useState([]);
+    const pagedata = loaderData;
 
     return (
         <div>
-            <h1>{title}</h1>
-            {imageUrl && <img src={imageUrl} alt={title} />}
-            <p>{summary}</p>
-            <button onClick={fetchWikiPage}>Explore Next Dungeon</button>
+            <h1>Asdfadsfdasf</h1>
+            <div>{JSON.stringify(pagedata)}</div>
         </div>
     );
 }
