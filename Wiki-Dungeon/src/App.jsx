@@ -14,9 +14,11 @@ const router = createBrowserRouter([
     element: <Title />,
   },
   {
-    path: "/game",
+    path: "/game/:initialpage",
+    loader: ({ params }) => {
+      return loadWikiDungenInfo(params.initialpage);
+    },
     element: <Game />,
-    loader: loadWikiDungenInfo,
   }
 ]);
 

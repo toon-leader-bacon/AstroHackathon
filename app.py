@@ -1,15 +1,47 @@
 import requests
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+import os
+import openai
+
+load_dotenv()  # This will load variables from .env into your environment
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+def generate_riddle(text):
+    """
+    Generates a riddle based on a Wikipedia page summary using OpenAI.
+
+    Parameters:
+        text (str): A short summary or key details about the Wikipedia page
+
+    Returns:
+        str: A riddle related to the content
+    """
+    prompt = f"Create a riddle based on this information: {text}"
+
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",  # or "gpt-4"
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt}
+        ],
+        max_tokens=100,
+        temperature=0.7,
+    )
+    
+    riddle = response['choices'][0]['message']['content'].strip()
+    return riddle
+
 
 def scrape_wikipedia(url):
     """
-    Fetches the summary and first 5 relevant Wikipedia article links for WikiRacing.
+    Fetches the name, summary, and first 5 relevant Wikipedia article links with riddles.
 
     Parameters:
         url (str): Wikipedia page URL
 
     Returns:
-        dict: Contains 'summary' and 'links' (first 5 relevant Wikipedia article URLs)
+        dict: Contains 'name', 'summary', and 'links_and_riddles' (list of tuples with link and riddle)
     """
     response = requests.get(url)
     
@@ -17,6 +49,9 @@ def scrape_wikipedia(url):
         return {"error": "Failed to fetch page"}
 
     soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Extract the name (title) of the page
+    name = soup.find("h1", {"id": "firstHeading"}).text.strip()
 
     # Extract the summary (first paragraph)
     summary = None
@@ -41,7 +76,42 @@ def scrape_wikipedia(url):
             if len(links) == 5:  # Stop after getting 5 relevant links
                 break
 
-    return {"summary": summary, "links": links}
+    # Generate a riddle for each link
+    links_and_riddles = []
+    for link in links:
+        page_summary = get_page_summary(link)
+        riddle = generate_riddle(page_summary)
+        links_and_riddles.append((link, riddle))
+
+    return {
+        "name": name,
+        "summary": summary,
+        "links_and_riddles": links_and_riddles
+    }
+
+
+def get_page_summary(url):
+    """
+    Helper function to get the summary of a page. It gets the first paragraph of the page.
+
+    Parameters:
+        url (str): Wikipedia page URL
+
+    Returns:
+        str: A short summary or the first paragraph of the Wikipedia page.
+    """
+    response = requests.get(url)
+    if response.status_code != 200:
+        return "Unable to fetch page summary."
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # Extract the first paragraph
+    for p in soup.find_all("p"):
+        if p.text.strip():
+            return p.text.strip()
+    
+    return "No summary available."
 
 # Example Usage:
 url = "https://en.wikipedia.org/wiki/Python_(programming_language)"
