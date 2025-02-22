@@ -11,7 +11,7 @@ export default function Title() {
       <div className="title-container">
         <div className="title-content">
           <h1>Wikipedia Dungeon</h1>
-          <p>Explore the depths of knowledge, one page at a time!</p>
+          <p>Explore the depths of knowledge, one Wiki at a time!</p>
           <Link to="/Game">
             <button className="enter-button">Enter the Dungeon</button>
           </Link>

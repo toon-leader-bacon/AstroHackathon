@@ -2,6 +2,7 @@
 .title-container {
     background: url('/dng_back.jpg') no-repeat center center/cover;
     height: 100vh; /* full viewport height */
+    width: 200vh;
     display: flex;
     justify-content: center;
     align-items: center;
