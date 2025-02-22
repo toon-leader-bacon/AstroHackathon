@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import FastAPI
-import FastApp.app as app
+import app as hackathon_app
 from pydantic import BaseModel
 
 
@@ -21,26 +21,26 @@ async def hello_world():
 @app.get("/generate_riddle")
 async def generate_riddle(request: Generate_Riddle_Request):
   response = Generate_Riddle_Response()
-  response.text = app.generate_riddle(request.text)
+  response.text = hackathon_app.generate_riddle(request.text)
   return response
 
 
 
-class Scrape_Wikipedia_Request:
+class Scrape_Wikipedia_Request(BaseModel):
   url: str
 
-class Scrape_Wikipedia_Response:
-  name: str
-  summary: str
-  links_and_riddles: List[List[str]] = []
+class Scrape_Wikipedia_Response(BaseModel):
+  name: str = ""
+  summary: str = ""
+  links_and_riddles: list[tuple[str]] = []
 
-@app.get("/scrape_wikipedia")
+@app.post("/scrape_wikipedia")
 async def scrape_wikipedia(request: Scrape_Wikipedia_Request):
-  app_result = app.scrape_wikipedia(request.url)
+  app_result = hackathon_app.scrape_wikipedia(request.url)
   response = Scrape_Wikipedia_Response()
   response.name = app_result["name"]
   response.summary = app_result["summary"]
-  response.links_and_riddles = app_result["links_and_riddles"]
+  # response.links_and_riddles = app_result["links_and_riddles"]
   return response
 
 
