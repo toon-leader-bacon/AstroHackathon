@@ -1,14 +1,23 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Game from "./components/Game";
+import Game from "./Game";
 import { Title } from "./Title";
+import '@mantine/core/styles.css';
+import { createTheme, MantineProvider } from '@mantine/core';
+
+const theme = createTheme({
+  /** Put your mantine theme override here */
+});
+
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<TitlePage />} />
-        <Route path="/game" element={<Game />} />
-      </Routes>
-    </Router>
+    <MantineProvider theme={theme}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Title />} />
+          <Route path="/game" element={<Game />} />
+        </Routes>
+      </Router>
+    </MantineProvider>
   );
 }
 
