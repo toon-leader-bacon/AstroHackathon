@@ -19,6 +19,7 @@ const interestingPages = [
 
 
 export default function Title() {
+
   const navigate = useNavigate();
 
   const getRandomPage = () => {
