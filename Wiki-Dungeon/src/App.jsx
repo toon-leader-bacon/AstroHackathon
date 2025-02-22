@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Game, { loadWikiDungenInfo } from "./Game";
+import Game, { HydrateFallback, loadWikiDungenInfo } from "./Game";
 import Title from "./Title";
 import '@mantine/core/styles.css';
 import { createTheme, MantineProvider } from '@mantine/core';
@@ -18,7 +18,8 @@ const router = createBrowserRouter([
     loader: ({ params }) => {
       return loadWikiDungenInfo(params.initialpage);
     },
-    element: <Game />,
+    Component: Game,
+    HydrateFallback: ()=><HydrateFallback />,
   }
 ]);
 
