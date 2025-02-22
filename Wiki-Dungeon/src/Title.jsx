@@ -6,7 +6,7 @@ import "./Title.css";
 //     return (<></>)
 // }
 
-export default Title = () => {
+export default function Title() {
     return (
       <div className="title-container">
         <div className="title-content">

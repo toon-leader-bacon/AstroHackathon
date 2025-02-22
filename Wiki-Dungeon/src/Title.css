@@ -1,0 +1,33 @@
+/* Title.css */
+.title-container {
+    background: url('/dng_back.jpg') no-repeat center center/cover;
+    height: 100vh; /* full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .title-content {
+    text-align: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.5); /* optional: add a semi-transparent overlay for readability */
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .enter-button {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .enter-button:hover {
+    background-color: #0056b3;
+  }
+  
