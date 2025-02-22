@@ -2,5 +2,5 @@
 Authors: 
 Jason Ruan
 Arthur Bacon
-Laiba 
+Laiba Siddique
 Akmal Alabi
