@@ -18,8 +18,8 @@ const router = createBrowserRouter([
     loader: ({ params }) => {
       return loadWikiDungenInfo(params.initialpage);
     },
-    hydrateFallbackElement: <HydrateFallback />,
-    element: <Game />,
+    Component: Game,
+    HydrateFallback: ()=><HydrateFallback />,
   }
 ]);
 

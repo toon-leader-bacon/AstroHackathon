@@ -1,14 +1,15 @@
 import { Loader } from "@mantine/core";
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 
 export async function loadWikiDungenInfo(pageTitle) {
-    console.log(pageTitle)
     try {
         const response = await fetch(
-            "https://en.wikipedia.org/api/rest_v1/page/random/summary"
+            "https://en.wikipedia.org/wiki/" + encodeURI(pageTitle)
         );
-        const page = await response.json();
-        return page
+        const page = await response.body();
+        console.log(page)
+        return page;
     } catch (error) {
         console.error("Error fetching Wikipedia page:", error);
         return null;
@@ -17,19 +18,21 @@ export async function loadWikiDungenInfo(pageTitle) {
 
 // HydrateFallback is rendered while the client loader is running
 export function HydrateFallback() {
-  return <Loader color="blue" type="dots" />;
+    return <Loader color="blue" type="dots" />;
 }
 
-function Game({
-  loaderData,
-}) {
-    const [pageHistory, setPageHistory] = useState([]);
-    const pagedata = loaderData;
+function Game() {
+    const loaderData = useLoaderData();
+    const [pageHistory, setPageHistory] = useState([loaderData]);
 
     return (
         <div>
+            <div id="pageHistory">
+                {pageHistory.map((value, i) => {
+                    return <li key={i}>{value}</li>;
+                })}
+            </div>
             <h1>Asdfadsfdasf</h1>
-            <div>{JSON.stringify(pagedata)}</div>
         </div>
     );
 }
