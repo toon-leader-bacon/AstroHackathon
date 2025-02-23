@@ -1,4 +1,6 @@
 .wikiEntry-container {
+  max-width: 850px;
+  margin: auto;
   display: flex;
   flex-direction: column;
 }
@@ -46,7 +48,7 @@
 .image-link {
   text-align: center;
   color: white;
-  max-width: 40vw;
+  max-width: 40%;
 }
 
 .image-link img {

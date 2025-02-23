@@ -214,6 +214,11 @@ def generate_riddle_images(links_and_riddles, client, image_dir):
 
     for page_link in links_and_riddles:
       link_title = get_link_title(page_link[0])
+      if if_sub_image_exists(image_dir, link_title) == True:
+        print("sub image does exist")
+        print(page_link)
+        continue
+      print("sub image generating")
       #  get the summary of the link
       link_summary = get_page_summary(page_link[0])
 
@@ -264,6 +269,7 @@ def if_main_image_exists(image_dir, name):
 def if_sub_image_exists(image_dir, link_title):
   # main_summary_of_{name}_image.png
   file_path = os.path.join(image_dir, f"{link_title}_sub_page_image.png")
+  print(f"{os.path.exists(file_path)}  {file_path}")
   return os.path.exists(file_path)
 
 
@@ -285,10 +291,8 @@ def create_all_images_for_page(name, summary, links_and_riddles):
     #  get the title from the link
     link_title = get_link_title(page[0])
     links_riddles_and_sub_images.append((page[0], page[1], os.path.join(image_dir, f"{link_title}_sub_page_image.png").strip('.')))
-    if if_sub_image_exists(image_dir, link_title) == False:
-      print("sub image does not exist")
-      generate_riddle_images(links_and_riddles, client, image_dir)
-      print("sub image generated")
+    generate_riddle_images(links_and_riddles, client, image_dir)
+
 
   # return a tuple containing the page name, summary, and links_riddles_and_sub_images tripple list.
   page_content = {"name": name, "summary": summary, "main_image": main_image_file_path,
