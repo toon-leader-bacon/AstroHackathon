@@ -1,8 +1,16 @@
 from typing import List
 from fastapi import FastAPI
-import Wiki_Dungeon_AI_Calls.app as hackathon_app
+import app as hackathon_app
+import os
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
+frontend_url = os.getenv("FRONTEND_URL")
+
+origins = [
+    "http://localhost:8000",
+    "http://localhost:5173"
+]
 
 class Generate_Riddle_Request(BaseModel):
     text: str
@@ -12,6 +20,13 @@ class Generate_Riddle_Response(BaseModel):
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/hello_world")
 async def hello_world():
@@ -40,7 +55,5 @@ async def scrape_wikipedia(request: Scrape_Wikipedia_Request):
   response = Scrape_Wikipedia_Response()
   response.name = app_result["name"]
   response.summary = app_result["summary"]
-  # response.links_and_riddles = app_result["links_and_riddles"]
+  response.links_and_riddles = app_result["links_and_riddles"]
   return response
-
-

@@ -1,38 +1,50 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Game, { HydrateFallback, loadWikiDungenInfo } from "./Game";
 import Title from "./Title";
+import "@mantine/core/styles.css";
+import { createTheme, MantineProvider } from "@mantine/core";
+import { createContext, useState } from "react";
+
+export const PageHistoryContext = createContext();
 import Instruction from "./instruction";
-import '@mantine/core/styles.css';
-import { createTheme, MantineProvider } from '@mantine/core';
 
 const theme = createTheme({
-  /** Put your mantine theme override here */
+    /** Put your mantine theme override here */
 });
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Title />,
-  },{
+    {
+        path: "/",
+        element: <Title />,
+    },{
     path: "/instruction",
     element: <Instruction />,
   },
-  {
-    path: "/game/:initialpage",
-    loader: ({ params }) => {
-      return loadWikiDungenInfo(params.initialpage);
+    {
+        path: "/game/:initialpage",
+        loader: ({ params }) => {
+            return loadWikiDungenInfo(params.initialpage);
+        },
+        Component: Game,
     },
-    Component: Game,
-    HydrateFallback: ()=><HydrateFallback />,
-  }
 ]);
 
 function App() {
-  return (
-    <MantineProvider theme={theme}>
-      <RouterProvider router={router} />
-    </MantineProvider>
-  );
+    const [pageHistory, setPageHistory] = useState([]);
+    return (
+        <PageHistoryContext.Provider
+            value={{
+                pageHistory,
+                setPageHistory: (newPage) => {setPageHistory((prev) => [...prev, newPage])},
+                resetPageHistory: () => setPageHistory([])
+            }}
+        >
+            {" "}
+            <MantineProvider theme={theme}>
+                <RouterProvider router={router} />
+            </MantineProvider>
+        </PageHistoryContext.Provider>
+    );
 }
 
 export default App;
