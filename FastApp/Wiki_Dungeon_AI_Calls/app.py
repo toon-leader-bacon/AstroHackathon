@@ -211,6 +211,7 @@ def generate_summary_image(name, summary, client, image_dir):
 def generate_riddle_images(links_and_riddles, client, image_dir):
   # response = requests.get(url)
   try:
+    print(len(links_and_riddles))
 
     for page_link in links_and_riddles:
       link_title = get_link_title(page_link[0])
@@ -291,7 +292,8 @@ def create_all_images_for_page(name, summary, links_and_riddles):
     #  get the title from the link
     link_title = get_link_title(page[0])
     links_riddles_and_sub_images.append((page[0], page[1], os.path.join(image_dir, f"{link_title}_sub_page_image.png").strip('.')))
-    generate_riddle_images(links_and_riddles, client, image_dir)
+  generate_riddle_images(links_and_riddles, client, image_dir)
+    
 
 
   # return a tuple containing the page name, summary, and links_riddles_and_sub_images tripple list.

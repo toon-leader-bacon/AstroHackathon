@@ -11,7 +11,8 @@ frontend_url = os.getenv("FRONTEND_URL")
 
 origins = [
     "http://localhost:8000",
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "http://localhost:4173",
 ]
 
 class Generate_Riddle_Request(BaseModel):

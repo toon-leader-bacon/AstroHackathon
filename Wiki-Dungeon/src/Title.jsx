@@ -5,9 +5,7 @@ import { Button } from "@mantine/core";
 import { PageHistoryContext } from "./App";
 
 const interestingPages = [
-  "Albert Einstein",
   "Paris",
-  "Cleopatra",
 ];
 
 export default function Title() {

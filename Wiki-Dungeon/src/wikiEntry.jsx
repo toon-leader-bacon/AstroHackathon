@@ -23,7 +23,7 @@ const WikiEntry = () => {
                 const pageDataValue = pageDataValueOBJ.pageData;
                 useEffect(() => {
                   setIsLoadingFalse()
-                }, [])
+                }, [pageDataValue])
                 return (
                     <div className="wikiEntry-container">
                         <div className="top-half">
