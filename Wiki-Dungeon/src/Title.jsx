@@ -6,15 +6,8 @@ import { PageHistoryContext } from "./App";
 
 const interestingPages = [
   "Albert Einstein",
-  "Mount Everest",
-  "Marie Curie",
   "Paris",
-  "Leonardo da Vinci",
-  "Grand Canyon",
-  "Mahatma Gandhi",
-  "Tokyo",
   "Cleopatra",
-  "Great Wall of China"
 ];
 
 export default function Title() {

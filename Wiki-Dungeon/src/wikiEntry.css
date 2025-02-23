@@ -40,11 +40,13 @@
   align-items: center;
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent dark background */
+  flex-wrap: wrap;
 }
 
 .image-link {
   text-align: center;
   color: white;
+  max-width: 40vw;
 }
 
 .image-link img {

@@ -6,10 +6,11 @@ import { PageHistoryContext } from "./App";
 const WikiEntry = () => {
     const navigate = useNavigate();
     const { pageDataGetter } = useLoaderData();
-    const { setPageHistory } = useContext(PageHistoryContext);
+    const { setPageHistory, setIsLoadingTrue, setIsLoadingFalse } = useContext(PageHistoryContext);
 
     const handlePageClick = (pageName) => {
         setPageHistory(decodeURI(pageName));
+        setIsLoadingTrue();
         navigate(`/game/${encodeURIComponent(pageName)}`);
     };
 
@@ -20,6 +21,7 @@ const WikiEntry = () => {
             resolve={pageDataGetter}
             children={(pageDataValueOBJ) => {
                 const pageDataValue = pageDataValueOBJ.pageData;
+                setIsLoadingFalse();
                 return (
                     <div className="wikiEntry-container">
                         <div className="top-half">

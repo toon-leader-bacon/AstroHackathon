@@ -33,7 +33,7 @@ export function HydrateFallback() {
 }
 
 function Game() {
-    const { pageHistory } = useContext(PageHistoryContext);
+    const { pageHistory, isLoading } = useContext(PageHistoryContext);
     return (
         <div>
             <ul className="pageHistoryList">
@@ -47,6 +47,7 @@ function Game() {
                     );
                 })}
             </ul>
+            {isLoading ? <Loader /> : null}
             <Suspense fallback={<HydrateFallback />}>
                 <WikiEntry />
             </Suspense>
