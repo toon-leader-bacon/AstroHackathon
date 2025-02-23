@@ -87,7 +87,7 @@ def scrape_wikipedia(url):
       href = link["href"]
 
       # Ensure it's a valid Wikipedia article link
-      if href.startswith("/wiki/") and ":" not in href and not href.startswith("/wiki/Main_Page"):
+      if href.startswith("/wiki/") and ":" not in href and not href.startswith("/wiki/Main_Page") and "disambigu" not in href:
         full_url = "https://en.wikipedia.org" + href
         links.append(full_url)
 
@@ -180,19 +180,12 @@ def get_link_title(url):
 
 
 def generate_summary_image(name, summary, client, image_dir):
-  # response = requests.get(url)
+  
   try:
-    # response = client.images.generate(
-    #     prompt="A cute baby sea otter",
-    #     n=2,
-    #     size="1024x1024"
-    # )
-    # create an image
-
-    # set the prompt
+    
     prompt = f"You are an artist specializing in realistic artwork. I'm making a website that includes detailed, accurate, realistic images of text summaries. Create a detailed, accurate, realistic image that is the combination of everything in the attached summary. You should still create the image even if it is complex and layered. Do not explain the components of the image to me.\n{summary}"
 
-    # call the OpenAI API
+    
     generation_response = client.images.generate(
         model="dall-e-3",
         prompt=prompt,
@@ -202,10 +195,6 @@ def generate_summary_image(name, summary, client, image_dir):
         response_format="url",
     )
 
-    # print response
-    # print(generation_response)
-
-    # save the image
     generated_image_name = f"main_summary_of_{name}_image.png"  # any name you like; the filetype should be .png
     generated_image_filepath = os.path.join(image_dir, generated_image_name)
     generated_image_url = generation_response.data[0].url  # extract image URL from response
@@ -218,31 +207,12 @@ def generate_summary_image(name, summary, client, image_dir):
     print(e.http_status)
     print(e.error)
 
-  # data = response.json()
-  # print(data)
-
-  # if response.status_code == 200:
-  #     data = response.json()
-  #     print(data)
-  # else:
-  #     print("Error:", response.status_code)
-
 
 def generate_riddle_images(links_and_riddles, client, image_dir):
   # response = requests.get(url)
   try:
 
     for page_link in links_and_riddles:
-      # print(f"generate_riddle_image: {page_link}")
-
-      # response = client.images.generate(
-      #     prompt="A cute baby sea otter",
-      #     n=2,
-      #     size="1024x1024"
-      # )
-      # create an image
-
-      #  get the title from the link
       link_title = get_link_title(page_link[0])
       #  get the summary of the link
       link_summary = get_page_summary(page_link[0])
@@ -314,7 +284,7 @@ def create_all_images_for_page(name, summary, links_and_riddles):
   for page in links_and_riddles:
     #  get the title from the link
     link_title = get_link_title(page[0])
-    links_riddles_and_sub_images.append((page[0], page[1], os.path.join(image_dir, f"{link_title}_sub_page_image.png")))
+    links_riddles_and_sub_images.append((page[0], page[1], os.path.join(image_dir, f"{link_title}_sub_page_image.png").strip('.')))
     if if_sub_image_exists(image_dir, link_title) == False:
       print("sub image does not exist")
       generate_riddle_images(links_and_riddles, client, image_dir)
