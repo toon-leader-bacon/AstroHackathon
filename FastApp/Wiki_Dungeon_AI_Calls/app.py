@@ -157,7 +157,7 @@ def setup_ai_call_api_for_images():
   if not os.path.isdir(image_dir):
     os.mkdir(image_dir)
 
-  return client, image_dir
+  return client, str(image_dir).trim(".")
 
   # print the directory to save to
   # print(f"{image_dir=}")
