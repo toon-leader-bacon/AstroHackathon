@@ -5,9 +5,11 @@ import os
 import openai
 from openai import OpenAI
 
-load_dotenv()  # This will load variables from .env into your environment
-openai.api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", openai.api_key))
+# call this before calling any other function. 
+def setup_ai_call_api():
+    load_dotenv()  # This will load variables from .env into your environment
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", openai.api_key))
 
 def generate_riddle(text):
     """
@@ -36,6 +38,8 @@ def generate_riddle(text):
 
 
 def scrape_wikipedia(url):
+    # setup the api key
+    setup_ai_call_api()
     """
     Fetches the name, summary, and first 5 relevant Wikipedia article links with riddles.
 
@@ -116,6 +120,7 @@ def get_page_summary(url):
     return "No summary available."
 
 # Example Usage:
-url = "https://en.wikipedia.org/wiki/Python_(programming_language)"
-result = scrape_wikipedia(url)
-print(result)
+# setup_ai_call_api()
+# url = "https://en.wikipedia.org/wiki/Python_(programming_language)"
+# result = scrape_wikipedia(url)
+# print(result)
