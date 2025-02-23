@@ -30,8 +30,7 @@ const WikiEntry = () => {
                             <div className="wiki-image">
                                 <img
                                     src={
-                                        pageDataValue?.thumbnail?.source ||
-                                        "/api/placeholder/400/300"
+                                        pageDataValue.main_image
                                     }
                                     alt={pageDataValue.title}
                                 />
@@ -39,7 +38,7 @@ const WikiEntry = () => {
                         </div>
 
                         <div className="bottom-half">
-                            {pageDataValue.links_and_riddles.map(
+                            {pageDataValue.links_riddles_and_sub_images.map(
                                 (pageName, index) => (
                                     <div
                                         key={index}
@@ -51,7 +50,7 @@ const WikiEntry = () => {
                                         }
                                     >
                                         <img
-                                            src={`/api/placeholder/${200}/${200}`}
+                                            src={`${import.meta.env.VITE_BACKEND_URL_PY}${pageName[2]}`}
                                             alt={pageName}
                                         />
                                         <p>{pageName[1]}</p>

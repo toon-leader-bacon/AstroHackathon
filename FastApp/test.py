@@ -5,6 +5,7 @@ from Wiki_Dungeon_AI_Calls import app as hackathon_app
 import os
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 frontend_url = os.getenv("FRONTEND_URL")
 
@@ -20,6 +21,7 @@ class Generate_Riddle_Response(BaseModel):
     text: str
 
 app = FastAPI()
+app.mount("/images", StaticFiles(directory="images"), name="images")
 
 app.add_middleware(
     CORSMiddleware,
