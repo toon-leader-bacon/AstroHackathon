@@ -16,10 +16,11 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <Title />,
-    },{
-    path: "/instruction",
-    element: <Instruction />,
-  },
+    },
+    {
+        path: "/instruction",
+        element: <Instruction />,
+    },
     {
         path: "/game/:initialpage",
         loader: ({ params }) => {
@@ -35,8 +36,10 @@ function App() {
         <PageHistoryContext.Provider
             value={{
                 pageHistory,
-                setPageHistory: (newPage) => {setPageHistory((prev) => [...prev, newPage])},
-                resetPageHistory: () => setPageHistory([])
+                setPageHistory: (newPage) => {
+                    setPageHistory((prev) => [...prev, newPage]);
+                },
+                resetPageHistory: (val) => setPageHistory([val]),
             }}
         >
             {" "}

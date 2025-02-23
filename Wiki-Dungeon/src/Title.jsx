@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Title.css";
 import { Button } from "@mantine/core";
+import { PageHistoryContext } from "./App";
 
 const interestingPages = [
   "Albert Einstein",
@@ -18,9 +19,11 @@ const interestingPages = [
 
 export default function Title() {
   const navigate = useNavigate();
+  const {setPageHistory, resetPageHistory} = useContext(PageHistoryContext);
 
   const getRandomPage = () => {
     const randomIndex = Math.floor(Math.random() * interestingPages.length);
+    resetPageHistory(interestingPages[randomIndex]);
     return navigate(`/game/${interestingPages[randomIndex]}`);
   }
 

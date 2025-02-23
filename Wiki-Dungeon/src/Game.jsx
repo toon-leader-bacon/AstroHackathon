@@ -15,11 +15,12 @@ export async function loadWikiDungenInfo(pageTitle) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    url: "https://en.wikipedia.org/wiki/" + encodeURI(pageTitle),
+                    url:
+                        "https://en.wikipedia.org/wiki/" + encodeURI(pageTitle),
                 }),
             }
         );
-        return response.json();
+        return { pageData: response.json() };
     } catch (error) {
         console.error("Error fetching Wikipedia page:", error);
         return null;
@@ -32,17 +33,12 @@ export function HydrateFallback() {
 }
 
 function Game() {
-    const { initialpage } = useParams();
-    const {pageHistory, setPageHistory} = useContext(PageHistoryContext);
-
-    useEffect(()=>{
-        setPageHistory(initialpage);
-    }, [initialpage])
+    const { pageHistory } = useContext(PageHistoryContext);
     return (
         <div>
             <div>
                 {pageHistory.map((value, i) => {
-                    return <li key={i}></li>;
+                    return <li key={i}>{value}</li>;
                 })}
             </div>
             <Suspense fallback={<HydrateFallback />}>
