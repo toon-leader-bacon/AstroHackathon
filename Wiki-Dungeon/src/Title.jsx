@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Title.css";
 import { Button } from "@mantine/core";
 
@@ -16,10 +16,7 @@ const interestingPages = [
   "Great Wall of China"
 ];
 
-
-
 export default function Title() {
-
   const navigate = useNavigate();
 
   const getRandomPage = () => {
@@ -27,12 +24,23 @@ export default function Title() {
     return navigate(`/game/${interestingPages[randomIndex]}`);
   }
 
+  const goToInstructions = () => {
+    navigate('/instruction');
+  }
+
   return (
     <div className="title-container">
       <div className="title-content">
         <h1>Wikipedia Dungeon</h1>
         <p>Explore the depths of knowledge, one page at a time!</p>
-        <Button onClick={getRandomPage} className="enter-button">Go To Random Start</Button>
+        <div className="button-container">
+          <Button onClick={getRandomPage} className="enter-button">
+            Go To Random Start
+          </Button>
+          <Button onClick={goToInstructions} className="instructions-button">
+            How to Play
+          </Button>
+        </div>
       </div>
     </div>
   );

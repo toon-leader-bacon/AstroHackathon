@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Game, { HydrateFallback, loadWikiDungenInfo } from "./Game";
 import Title from "./Title";
+import Instruction from "./instruction";
 import '@mantine/core/styles.css';
 import { createTheme, MantineProvider } from '@mantine/core';
 
@@ -12,6 +13,9 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Title />,
+  },{
+    path: "/instruction",
+    element: <Instruction />,
   },
   {
     path: "/game/:initialpage",
