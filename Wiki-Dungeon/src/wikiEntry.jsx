@@ -29,9 +29,12 @@ const WikiEntry = () => {
                             </div>
                             <div className="wiki-image">
                                 <img
-                                    src={
-                                        pageDataValue.main_image
-                                    }
+                                    src={`${
+                                        import.meta.env.VITE_BACKEND_URL_PY
+                                    }${pageDataValue.main_image.replace(
+                                        /^\./,
+                                        ""
+                                    )}`}
                                     alt={pageDataValue.title}
                                 />
                             </div>
@@ -50,7 +53,10 @@ const WikiEntry = () => {
                                         }
                                     >
                                         <img
-                                            src={`${import.meta.env.VITE_BACKEND_URL_PY}${pageName[2]}`}
+                                            src={`${
+                                                import.meta.env
+                                                    .VITE_BACKEND_URL_PY
+                                            }${pageName[2].replace(/^\./, "")}`}
                                             alt={pageName}
                                         />
                                         <p>{pageName[1]}</p>
