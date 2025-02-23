@@ -1,18 +1,6 @@
 .wikiEntry-container {
   display: flex;
   flex-direction: column;
-  width: 100vw;
-  height: 100vh;
-  background-image: url("/dng_back.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  margin: 0;  
-  padding: 0; 
-  position: fixed; 
-  top: 0;     
-  left: 0;    
 }
 
 .top-half {

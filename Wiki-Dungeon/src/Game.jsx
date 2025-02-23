@@ -4,27 +4,27 @@ import WikiEntry from "./wikiEntry";
 import { useLoaderData, useParams } from "react-router-dom";
 import { PageHistoryContext } from "./App";
 
+async function scrape_wikipedia_promis(pageTitle) {
+    const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL_PY}\\scrape_wikipedia`,
+        {
+            method: "POST",
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                url: "https://en.wikipedia.org/wiki/" + encodeURI(pageTitle),
+            }),
+        }
+    );
+    const pageData = await response.json();
+    console.log(pageData)
+    return { pageData };
+}
+
 export async function loadWikiDungenInfo(pageTitle) {
-    try {
-        const response = await fetch(
-            `${import.meta.env.VITE_BACKEND_URL_PY}\\scrape_wikipedia`,
-            {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    url:
-                        "https://en.wikipedia.org/wiki/" + encodeURI(pageTitle),
-                }),
-            }
-        );
-        return { pageData: response.json() };
-    } catch (error) {
-        console.error("Error fetching Wikipedia page:", error);
-        return null;
-    }
+    return { pageDataGetter: scrape_wikipedia_promis(pageTitle) };
 }
 
 // HydrateFallback is rendered while the client loader is running
@@ -36,11 +36,15 @@ function Game() {
     const { pageHistory } = useContext(PageHistoryContext);
     return (
         <div>
-            <div>
+            <ul className="pageHistoryList">
                 {pageHistory.map((value, i) => {
-                    return <li key={i}>{value}</li>;
+                    return (
+                        <li className="pageHistoryListItem" key={i}>
+                            {value}
+                        </li>
+                    );
                 })}
-            </div>
+            </ul>
             <Suspense fallback={<HydrateFallback />}>
                 <WikiEntry />
             </Suspense>
