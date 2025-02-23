@@ -32,6 +32,8 @@ const router = createBrowserRouter([
 
 function App() {
     const [pageHistory, setPageHistory] = useState([]);
+    const [isLoading, setIsloading] = useState(false);
+
     return (
         <PageHistoryContext.Provider
             value={{
@@ -40,6 +42,9 @@ function App() {
                     setPageHistory((prev) => [...prev, newPage]);
                 },
                 resetPageHistory: (val) => setPageHistory([val]),
+                isLoading,
+                setIsLoadingTrue: () => setIsloading(true),
+                setIsLoadingFalse: () => setIsloading(false),
             }}
         >
             {" "}

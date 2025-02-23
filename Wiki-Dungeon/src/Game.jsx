@@ -19,7 +19,7 @@ async function scrape_wikipedia_promis(pageTitle) {
         }
     );
     const pageData = await response.json();
-    console.log(pageData)
+    console.log(pageData);
     return { pageData };
 }
 
@@ -29,22 +29,25 @@ export async function loadWikiDungenInfo(pageTitle) {
 
 // HydrateFallback is rendered while the client loader is running
 export function HydrateFallback() {
-    return <Loader color="blue" type="dots" />;
+    return <Loader className="loader" size="xl" color="blue" type="dots" />;
 }
 
 function Game() {
-    const { pageHistory } = useContext(PageHistoryContext);
+    const { pageHistory, isLoading } = useContext(PageHistoryContext);
     return (
         <div>
             <ul className="pageHistoryList">
                 {pageHistory.map((value, i) => {
                     return (
-                        <li className="pageHistoryListItem" key={i}>
-                            {value}
-                        </li>
+                        <React.Fragment key={i}>
+                            <li className="pageHistoryListItem">{value}</li>
+                            {i < pageHistory.length - 1 && <span>➡️</span>}{" "}
+                            {/* Arrow emoji */}
+                        </React.Fragment>
                     );
                 })}
             </ul>
+            {isLoading ? <Loader /> : null}
             <Suspense fallback={<HydrateFallback />}>
                 <WikiEntry />
             </Suspense>

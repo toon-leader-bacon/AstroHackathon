@@ -6,10 +6,11 @@ import { PageHistoryContext } from "./App";
 const WikiEntry = () => {
     const navigate = useNavigate();
     const { pageDataGetter } = useLoaderData();
-    const { setPageHistory } = useContext(PageHistoryContext);
+    const { setPageHistory, setIsLoadingTrue, setIsLoadingFalse } = useContext(PageHistoryContext);
 
     const handlePageClick = (pageName) => {
         setPageHistory(decodeURI(pageName));
+        setIsLoadingTrue();
         navigate(`/game/${encodeURIComponent(pageName)}`);
     };
 
@@ -20,18 +21,22 @@ const WikiEntry = () => {
             resolve={pageDataGetter}
             children={(pageDataValueOBJ) => {
                 const pageDataValue = pageDataValueOBJ.pageData;
+                setIsLoadingFalse();
                 return (
                     <div className="wikiEntry-container">
                         <div className="top-half">
                             <div className="summary">
-                                <h1>{pageDataValue.title}</h1>
-                                <p>{pageDataValue.extract}</p>
+                                <h1>{pageDataValue.name}</h1>
+                                <p>{pageDataValue.summary}</p>
                             </div>
                             <div className="wiki-image">
                                 <img
-                                    src={
-                                        pageDataValue.main_image
-                                    }
+                                    src={`${
+                                        import.meta.env.VITE_BACKEND_URL_PY
+                                    }${pageDataValue.main_image.replace(
+                                        /^\./,
+                                        ""
+                                    )}`}
                                     alt={pageDataValue.title}
                                 />
                             </div>
@@ -50,7 +55,10 @@ const WikiEntry = () => {
                                         }
                                     >
                                         <img
-                                            src={`${import.meta.env.VITE_BACKEND_URL_PY}${pageName[2]}`}
+                                            src={`${
+                                                import.meta.env
+                                                    .VITE_BACKEND_URL_PY
+                                            }${pageName[2].replace(/^\./, "")}`}
                                             alt={pageName}
                                         />
                                         <p>{pageName[1]}</p>
