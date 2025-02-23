@@ -15,26 +15,29 @@ from openai import OpenAI
 # initialize OpenAI client
 # client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", config['api_key']))
 
-# Load API key from JSON file
-with open('../config.json') as config_file:
-    config = json.load(config_file)
-    api_key = config['api_key']
+def setup_ai_call_api_for_images():
+    # Load API key from JSON file
+    with open('../config.json') as config_file:
+        config = json.load(config_file)
+        api_key = config['api_key']
+    
+    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", config['api_key']))
 
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", config['api_key']))
+    # # Example API URL
+    # url = f"https://api.example.com/data?api_key={api_key}"
 
-# # Example API URL
-# url = f"https://api.example.com/data?api_key={api_key}"
+    # set a directory to save DALL E images to
+    image_dir_name = "images"
+    image_dir = os.path.join(os.curdir, image_dir_name)
 
-# set a directory to save DALL E images to
-image_dir_name = "images"
-image_dir = os.path.join(os.curdir, image_dir_name)
+    # create the directory if it doesn't yet exist
+    if not os.path.isdir(image_dir):
+        os.mkdir(image_dir)
 
-# create the directory if it doesn't yet exist
-if not os.path.isdir(image_dir):
-    os.mkdir(image_dir)
+    return client, image_dir
 
-# print the directory to save to
-# print(f"{image_dir=}")
+    # print the directory to save to
+    # print(f"{image_dir=}")
 
 # def get_page_summary(url):
 #     """
@@ -61,8 +64,8 @@ if not os.path.isdir(image_dir):
 
 def get_link_title(url):
     # Send a GET request to the URL
+    # print(f"get_link_title: {url}")
     response = requests.get(url)
-    
     # If the request was successful
     if response.status_code == 200:
         # Parse the HTML content
@@ -76,7 +79,7 @@ def get_link_title(url):
 
 
 # Create a function that uses the name of the wiki article and its summary to create an image for it. 
-def generate_summary_image(name, summary):
+def generate_summary_image(name, summary, client, image_dir):
     # response = requests.get(url)
     try: 
         # response = client.images.generate(
@@ -95,7 +98,7 @@ def generate_summary_image(name, summary):
             prompt=prompt,
             n=1,
             size="1024x1024",
-            style="natural",
+            # style="natural",
             response_format="url",
         )
 
@@ -125,11 +128,12 @@ def generate_summary_image(name, summary):
     #     print("Error:", response.status_code)
 
 # Create a function that uses the links and riddles of the hyperlinked articles in the main wiki article to create riddles for them. 
-def generate_riddle_images(links_and_riddles):
+def generate_riddle_images(links_and_riddles, client, image_dir):
     # response = requests.get(url)
     try: 
 
         for page_link in links_and_riddles: 
+            # print(f"generate_riddle_image: {page_link}")
 
             # response = client.images.generate(
             #     prompt="A cute baby sea otter",
@@ -141,7 +145,7 @@ def generate_riddle_images(links_and_riddles):
             #  get the title from the link
             link_title = get_link_title(page_link[0])
             #  get the summary of the link
-            link_summary = get_page_summary(page_link[1])
+            link_summary = get_page_summary(page_link[0])
 
             # set the prompt
             prompt = f"You are an artist specializing in cartoon artwork. I'm making a website that includes detailed, accurate cartoon images of text summaries. Create a detailed, accurate cartoon image that is the combination of everything in the attached summary. You should still create the image even if it is complex and layered. Do not explain the components of the image to me. Do not include the name of the topic in the image.\n{link_summary}"
@@ -179,3 +183,53 @@ def generate_riddle_images(links_and_riddles):
     #     print(data)
     # else:
     #     print("Error:", response.status_code)
+
+# Create a function that determines if the main image already exists.
+# If the image does exists, return true. Else, false. 
+def if_main_image_exists(image_dir, name):
+    # main_summary_of_{name}_image.png
+    file_path = os.path.join(image_dir, f"main_summary_of_{name}_image.png")
+    return os.path.exists(file_path)
+
+# Create a function that determines if the sub image already exists.
+# If the image does exists, return true. Else, false. 
+def if_sub_image_exists(image_dir, link_title):
+    # main_summary_of_{name}_image.png
+    file_path = os.path.join(image_dir, f"{link_title}_sub_page_image.png")
+    return os.path.exists(file_path)
+    
+
+# Create a function that calls all functions and only needs the url, name, summary, and links_andriddles so they can be passed in from apps.py
+# `@name`: the name/title of the wiki page (no longer need `url`: the url of the wiki page)
+# `@summary`: the summary of the wiki page
+# `links_and_riddles`: tuple of tuples of the links (and their riddles (though this part not needed)) of the wiki page
+def create_all_images_for_page(name, summary, links_and_riddles):
+    client, image_dir = setup_ai_call_api_for_images()
+    # If the images due not exist, generate them. 
+    if if_main_image_exists(image_dir, name) == False:
+        print("main image does not exist")
+        generate_summary_image(name, summary, client, image_dir)
+        print("main image generated")
+    
+    for page in links_and_riddles:
+        #  get the title from the link
+        link_title = get_link_title(page[0])
+        if if_sub_image_exists(image_dir, link_title) == False:
+            print("sub image does not exist")
+            generate_riddle_images(links_and_riddles, client, image_dir)
+            print("sub image generated")
+
+# # Example Usage:
+# client, image_dir = setup_ai_call_api_for_images()
+url = "https://en.wikipedia.org/wiki/George_Washington"
+links_and_riddles = ((url, "Through wars harsh tide, I steered the way, Against a crown, I would not sway. Through frozen night, I took my stand, To free the soul of this new land. With wisdom firm, I shaped the rule, Refused the scepter, kept it cool. Two times called, then walked away, A nations guide to this day. Who am I"), 
+                     (url, "Through wars harsh tide, I steered the way, Against a crown, I would not sway. Through frozen night, I took my stand, To free the soul of this new land. With wisdom firm, I shaped the rule, Refused the scepter, kept it cool. Two times called, then walked away, A nations guide to this day. Who am I"))
+name = get_link_title(url)
+# print(f"name = {name}")
+summary = get_page_summary(url)
+create_all_images_for_page(name, summary, links_and_riddles)
+# # generate_summary_image(name, summary, client, image_dir)
+# generate_riddle_images(links_and_riddles, client, image_dir)
+# result
+# print(result)
+

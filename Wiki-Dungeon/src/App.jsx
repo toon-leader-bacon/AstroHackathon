@@ -6,6 +6,9 @@ import { createTheme, MantineProvider } from "@mantine/core";
 import { createContext, useState } from "react";
 
 export const PageHistoryContext = createContext();
+import Instruction from "./instruction";
+import '@mantine/core/styles.css';
+import { createTheme, MantineProvider } from '@mantine/core';
 
 const theme = createTheme({
     /** Put your mantine theme override here */
@@ -15,7 +18,10 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <Title />,
-    },
+    },{
+    path: "/instruction",
+    element: <Instruction />,
+  },
     {
         path: "/game/:initialpage",
         loader: ({ params }) => {
