@@ -1,10 +1,11 @@
+from functools import cache
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import os
 import openai
 
-
+@cache
 def generate_riddle(text):
     """
     Generates a riddle based on a Wikipedia page summary using OpenAI.
@@ -32,7 +33,7 @@ def generate_riddle(text):
     riddle = response.choices[0].message.content.strip()
     return riddle
 
-
+@cache
 def scrape_wikipedia(url):
     """
     Fetches the name, summary, and first 5 relevant Wikipedia article links with riddles.
@@ -95,7 +96,7 @@ def scrape_wikipedia(url):
         "links_and_riddles": links_and_riddles
     }
 
-
+@cache
 def get_page_summary(url):
     """
     Helper function to get the summary of a page. It gets the first paragraph of the page.

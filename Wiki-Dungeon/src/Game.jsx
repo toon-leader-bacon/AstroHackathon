@@ -1,16 +1,25 @@
 import { Loader } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useState, Suspense, useContext, useEffect } from "react";
 import WikiEntry from "./wikiEntry";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
+import { PageHistoryContext } from "./App";
 
 export async function loadWikiDungenInfo(pageTitle) {
     try {
         const response = await fetch(
-            "https://en.wikipedia.org/wiki/" + encodeURI(pageTitle)
+            `${import.meta.env.VITE_BACKEND_URL_PY}\\scrape_wikipedia`,
+            {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    url: "https://en.wikipedia.org/wiki/" + encodeURI(pageTitle),
+                }),
+            }
         );
-        const page = await response.body();
-        console.log(page);
-        return page;
+        return response.json();
     } catch (error) {
         console.error("Error fetching Wikipedia page:", error);
         return null;
@@ -23,9 +32,12 @@ export function HydrateFallback() {
 }
 
 function Game() {
-    const loaderData = useLoaderData();
-    const [pageHistory, setPageHistory] = useState([loaderData]);
+    const { initialpage } = useParams();
+    const {pageHistory, setPageHistory} = useContext(PageHistoryContext);
 
+    useEffect(()=>{
+        setPageHistory(initialpage);
+    }, [initialpage])
     return (
         <div>
             <div>
@@ -33,9 +45,9 @@ function Game() {
                     return <li key={i}></li>;
                 })}
             </div>
-            <div>
+            <Suspense fallback={<HydrateFallback />}>
                 <WikiEntry />
-            </div>
+            </Suspense>
         </div>
     );
 }
