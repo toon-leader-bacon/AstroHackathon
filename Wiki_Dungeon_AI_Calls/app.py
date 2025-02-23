@@ -31,7 +31,7 @@ def generate_riddle(text):
         temperature=0.7,
     )
     
-    riddle = response['choices'][0]['message']['content'].strip()
+    riddle = response.choices[0].message
     return riddle
 
 
