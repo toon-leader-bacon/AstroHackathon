@@ -205,6 +205,12 @@ def if_sub_image_exists(image_dir, link_title):
 # `links_and_riddles`: tuple of tuples of the links (and their riddles (though this part not needed)) of the wiki page
 def create_all_images_for_page(name, summary, links_and_riddles):
     client, image_dir = setup_ai_call_api_for_images()
+    # Create a variable that holds the main image path. 
+    main_image_file_path = os.path.join(image_dir, f"main_summary_of_{name}_image.png")
+
+    # Create a triple list that will hold the link, riddle, and sub image for each of this page's links/riddles. 
+    links_riddles_and_sub_images = []
+
     # If the images due not exist, generate them. 
     if if_main_image_exists(image_dir, name) == False:
         print("main image does not exist")
@@ -214,10 +220,15 @@ def create_all_images_for_page(name, summary, links_and_riddles):
     for page in links_and_riddles:
         #  get the title from the link
         link_title = get_link_title(page[0])
+        links_riddles_and_sub_images.append((page[0], page[1], os.path.join(image_dir, f"{link_title}_sub_page_image.png")))
         if if_sub_image_exists(image_dir, link_title) == False:
             print("sub image does not exist")
             generate_riddle_images(links_and_riddles, client, image_dir)
             print("sub image generated")
+    
+    # return a tuple containing the page name, summary, and links_riddles_and_sub_images tripple list. 
+    page_content = (name, summary, links_riddles_and_sub_images)
+    return page_content
 
 # # Example Usage:
 # client, image_dir = setup_ai_call_api_for_images()
@@ -227,9 +238,9 @@ links_and_riddles = ((url, "Through wars harsh tide, I steered the way, Against 
 name = get_link_title(url)
 # print(f"name = {name}")
 summary = get_page_summary(url)
-create_all_images_for_page(name, summary, links_and_riddles)
+page_content = create_all_images_for_page(name, summary, links_and_riddles)
 # # generate_summary_image(name, summary, client, image_dir)
 # generate_riddle_images(links_and_riddles, client, image_dir)
 # result
-# print(result)
+# print(page_content)
 
