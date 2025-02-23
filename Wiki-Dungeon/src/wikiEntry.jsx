@@ -5,7 +5,7 @@ import { PageHistoryContext } from "./App";
 
 const WikiEntry = () => {
     const navigate = useNavigate();
-    const { pageData } = useLoaderData();
+    const { pageDataGetter } = useLoaderData();
     const { setPageHistory } = useContext(PageHistoryContext);
 
     const handlePageClick = (pageName) => {
@@ -16,8 +16,10 @@ const WikiEntry = () => {
     // Use pageData if available, otherwise use placeholder
 
     return (
-        <Await resolve={pageData}>
-            {(pageDataValue) => {
+        <Await
+            resolve={pageDataGetter}
+            children={(pageDataValueOBJ) => {
+                const pageDataValue = pageDataValueOBJ.pageData;
                 return (
                     <div className="wikiEntry-container">
                         <div className="top-half">
@@ -28,7 +30,7 @@ const WikiEntry = () => {
                             <div className="wiki-image">
                                 <img
                                     src={
-                                        pageData?.thumbnail?.source ||
+                                        pageDataValue?.thumbnail?.source ||
                                         "/api/placeholder/400/300"
                                     }
                                     alt={pageDataValue.title}
@@ -60,7 +62,7 @@ const WikiEntry = () => {
                     </div>
                 );
             }}
-        </Await>
+        />
     );
 };
 
