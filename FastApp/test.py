@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import FastAPI
-import app as hackathon_app
+# import app as hackathon_app
+from Wiki_Dungeon_AI_Calls import app as hackathon_app
 import os
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -67,6 +68,7 @@ class Scrape_Wikipedia_Response(BaseModel): #update
 @app.post("/scrape_wikipedia")
 async def scrape_wikipedia(request: Scrape_Wikipedia_Request): #update
   app_result = hackathon_app.scrape_wikipedia(request.url)
+  print(f"finished: {app_result}")
   response = Scrape_Wikipedia_Response()
   response.name = app_result["name"]
   response.summary = app_result["summary"]
