@@ -3,6 +3,7 @@ import React, { useState, Suspense, useContext, useEffect } from "react";
 import WikiEntry from "./wikiEntry";
 import { useLoaderData, useParams } from "react-router-dom";
 import { PageHistoryContext } from "./App";
+import Loader2 from "./Loader"
 
 async function scrape_wikipedia_promis(pageTitle) {
     const response = await fetch(
@@ -47,7 +48,7 @@ function Game() {
                     );
                 })}
             </ul>
-            {isLoading ? <Loader /> : null}
+            {isLoading ? <Loader2 /> : null}
             <Suspense fallback={<HydrateFallback />}>
                 <WikiEntry />
             </Suspense>
