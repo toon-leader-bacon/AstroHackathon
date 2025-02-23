@@ -24,8 +24,8 @@ const WikiEntry = () => {
                     <div className="wikiEntry-container">
                         <div className="top-half">
                             <div className="summary">
-                                <h1>{pageDataValue.title}</h1>
-                                <p>{pageDataValue.extract}</p>
+                                <h1>{pageDataValue.name}</h1>
+                                <p>{pageDataValue.summary}</p>
                             </div>
                             <div className="wiki-image">
                                 <img

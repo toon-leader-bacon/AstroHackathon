@@ -1,7 +1,6 @@
 body {
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Prevents scrolling */
   }
   
   .instructions-container {
@@ -10,7 +9,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    height: 100vh; /* Changed from min-height to height */
+    min-height: 100vh; /* Changed from min-height to height */
     display: flex;
     justify-content: center;
     align-items: center;
