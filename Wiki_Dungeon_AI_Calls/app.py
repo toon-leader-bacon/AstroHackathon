@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 import openai
 from openai import OpenAI
+from image_and_summary_generation_calls import create_all_images_for_page
 
 # call this before calling any other function. 
 def setup_ai_call_api():
@@ -90,11 +91,18 @@ def scrape_wikipedia(url):
         riddle = generate_riddle(page_summary, client)
         links_and_riddles.append((link, riddle))
 
-    return {
-        "name": name,
-        "summary": summary,
-        "links_and_riddles": links_and_riddles
-    }
+    # Generate all the images that are needed for the page and return a dictionary holding all the content that is needed to generate the page. 
+    # page_content = {"name": name, "summary":  summary, "main_image": main_image_file_path, "links_riddles_and_sub_images": links_riddles_and_sub_images}
+    # links_riddles_and_sub_images = (link, riddle, sub_image)
+    page_content = create_all_images_for_page(name, summary, links_and_riddles)
+    return page_content
+
+    # return {
+    #     "name": name,
+    #     "summary": summary,
+    #     "links_and_riddles": links_and_riddles
+    # }
+    
 
 
 def get_page_summary(url):

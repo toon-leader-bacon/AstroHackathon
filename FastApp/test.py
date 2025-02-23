@@ -39,21 +39,37 @@ async def generate_riddle(request: Generate_Riddle_Request):
   response.text = hackathon_app.generate_riddle(request.text)
   return response
 
+# @app.get("/generate_all_page_contents")
+# async def generate_all_page_contents(request: Generate_All_Page_Contents_Request):
+#   response = Generate_Riddle_Response()
+#   response.text = hackathon_app.generate_riddle(request.text)
+#   return response
 
+
+
+# class Generate_All_Page_Contents_Request(BaseModel):
+#   url: str
+
+# class Generate_All_Page_Contents_Response(BaseModel):
+#   name: str = ""
+#   summary: str = ""
+#   links_and_riddles: list[tuple[str]] = []
 
 class Scrape_Wikipedia_Request(BaseModel):
   url: str
 
-class Scrape_Wikipedia_Response(BaseModel):
+class Scrape_Wikipedia_Response(BaseModel): #update
   name: str = ""
   summary: str = ""
-  links_and_riddles: list[tuple[str]] = []
+  main_image: str = ""
+  links_riddles_and_sub_images: list[tuple[str]] = []
 
 @app.post("/scrape_wikipedia")
-async def scrape_wikipedia(request: Scrape_Wikipedia_Request):
+async def scrape_wikipedia(request: Scrape_Wikipedia_Request): #update
   app_result = hackathon_app.scrape_wikipedia(request.url)
   response = Scrape_Wikipedia_Response()
   response.name = app_result["name"]
   response.summary = app_result["summary"]
-  response.links_and_riddles = app_result["links_and_riddles"]
+  response.main_image = app_result["main_image"]
+  response.links_riddles_and_sub_images = app_result["links_riddles_and_sub_images"]
   return response
