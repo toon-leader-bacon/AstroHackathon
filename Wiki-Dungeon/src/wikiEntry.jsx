@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import "./WikiEntry.css";
 import { PageHistoryContext } from "./App";
@@ -21,7 +21,9 @@ const WikiEntry = () => {
             resolve={pageDataGetter}
             children={(pageDataValueOBJ) => {
                 const pageDataValue = pageDataValueOBJ.pageData;
-                setIsLoadingFalse();
+                useEffect(() => {
+                  setIsLoadingFalse()
+                }, [])
                 return (
                     <div className="wikiEntry-container">
                         <div className="top-half">
