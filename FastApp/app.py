@@ -43,17 +43,17 @@ def scrape_wikipedia(url):
     Returns:
         dict: Contains 'name', 'summary', and 'links_and_riddles' (list of tuples with link and riddle)
     """
-    print("flag1")
+    
     load_dotenv()  # This will load variables from .env into your environment
     openai.api_key = os.getenv("OPENAI_API_KEY")
-    print("flag2")
+    
     
     response = requests.get(url)
-    print("flag3")
+    
     
     if response.status_code != 200:
         return {"error": "Failed to fetch page"}
-    print("flag4")
+    
     soup = BeautifulSoup(response.text, 'html.parser')
 
     # Extract the name (title) of the page
@@ -65,7 +65,7 @@ def scrape_wikipedia(url):
         if p.text.strip():
             summary = p.text.strip()
             break  # Get the first non-empty paragraph
-    print("flag5")
+    
     # Extract relevant Wikipedia article links
     links = []
     content_div = soup.find("div", {"id": "mw-content-text"})  # The main article content
@@ -81,14 +81,14 @@ def scrape_wikipedia(url):
 
             if len(links) == 5:  # Stop after getting 5 relevant links
                 break
-    print("flag6")
+    
     # Generate a riddle for each link
     links_and_riddles = []
     for link in links:
         page_summary = get_page_summary(link)
         riddle = generate_riddle(page_summary)
         links_and_riddles.append((link, riddle))
-    print("flag7")
+    
     return {
         "name": name,
         "summary": summary,
