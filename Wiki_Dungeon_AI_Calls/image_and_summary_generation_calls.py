@@ -3,7 +3,7 @@ import requests  # used to download images
 import os  # used to access filepaths
 from PIL import Image  # used to print and edit images # pip3 install Pillow
 from bs4 import BeautifulSoup
-# from ..app import get_page_summary
+from app import get_page_summary
 
 # https://cookbook.openai.com/examples/dalle/image_generations_edits_and_variations_with_dall-e
 #  IMPORT NEEDED STUFF BEFORE RUNNING CODE
@@ -36,28 +36,28 @@ if not os.path.isdir(image_dir):
 # print the directory to save to
 # print(f"{image_dir=}")
 
-def get_page_summary(url):
-    """
-    Helper function to get the summary of a page. It gets the first paragraph of the page.
+# def get_page_summary(url):
+#     """
+#     Helper function to get the summary of a page. It gets the first paragraph of the page.
 
-    Parameters:
-        url (str): Wikipedia page URL
+#     Parameters:
+#         url (str): Wikipedia page URL
 
-    Returns:
-        str: A short summary or the first paragraph of the Wikipedia page.
-    """
-    response = requests.get(url)
-    if response.status_code != 200:
-        return "Unable to fetch page summary."
+#     Returns:
+#         str: A short summary or the first paragraph of the Wikipedia page.
+#     """
+#     response = requests.get(url)
+#     if response.status_code != 200:
+#         return "Unable to fetch page summary."
 
-    soup = BeautifulSoup(response.text, 'html.parser')
+#     soup = BeautifulSoup(response.text, 'html.parser')
 
-    # Extract the first paragraph
-    for p in soup.find_all("p"):
-        if p.text.strip():
-            return p.text.strip()
+#     # Extract the first paragraph
+#     for p in soup.find_all("p"):
+#         if p.text.strip():
+#             return p.text.strip()
     
-    return "No summary available."
+#     return "No summary available."
 
 def get_link_title(url):
     # Send a GET request to the URL
@@ -152,7 +152,6 @@ def generate_riddle_images(links_and_riddles):
                 prompt=prompt,
                 n=1,
                 size="1024x1024",
-                style="natural",
                 response_format="url",
             )
 

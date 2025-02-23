@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import FastAPI
-import app as hackathon_app
+import Wiki_Dungeon_AI_Calls.app as hackathon_app
 from pydantic import BaseModel
 
 
