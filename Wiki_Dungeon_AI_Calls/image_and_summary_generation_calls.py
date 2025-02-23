@@ -227,20 +227,20 @@ def create_all_images_for_page(name, summary, links_and_riddles):
             print("sub image generated")
     
     # return a tuple containing the page name, summary, and links_riddles_and_sub_images tripple list. 
-    page_content = (name, summary, links_riddles_and_sub_images)
+    page_content = {"name": name, "summary":  summary, "main_image": main_image_file_path, "links_riddles_and_sub_images": links_riddles_and_sub_images}
     return page_content
 
-# # Example Usage:
-# client, image_dir = setup_ai_call_api_for_images()
-url = "https://en.wikipedia.org/wiki/George_Washington"
-links_and_riddles = ((url, "Through wars harsh tide, I steered the way, Against a crown, I would not sway. Through frozen night, I took my stand, To free the soul of this new land. With wisdom firm, I shaped the rule, Refused the scepter, kept it cool. Two times called, then walked away, A nations guide to this day. Who am I"), 
-                     (url, "Through wars harsh tide, I steered the way, Against a crown, I would not sway. Through frozen night, I took my stand, To free the soul of this new land. With wisdom firm, I shaped the rule, Refused the scepter, kept it cool. Two times called, then walked away, A nations guide to this day. Who am I"))
-name = get_link_title(url)
-# print(f"name = {name}")
-summary = get_page_summary(url)
-page_content = create_all_images_for_page(name, summary, links_and_riddles)
-# # generate_summary_image(name, summary, client, image_dir)
-# generate_riddle_images(links_and_riddles, client, image_dir)
-# result
-# print(page_content)
+# # # Example Usage:
+# # client, image_dir = setup_ai_call_api_for_images()
+# url = "https://en.wikipedia.org/wiki/George_Washington"
+# links_and_riddles = ((url, "Through wars harsh tide, I steered the way, Against a crown, I would not sway. Through frozen night, I took my stand, To free the soul of this new land. With wisdom firm, I shaped the rule, Refused the scepter, kept it cool. Two times called, then walked away, A nations guide to this day. Who am I"), 
+#                      (url, "Through wars harsh tide, I steered the way, Against a crown, I would not sway. Through frozen night, I took my stand, To free the soul of this new land. With wisdom firm, I shaped the rule, Refused the scepter, kept it cool. Two times called, then walked away, A nations guide to this day. Who am I"))
+# name = get_link_title(url)
+# # print(f"name = {name}")
+# summary = get_page_summary(url)
+# page_content = create_all_images_for_page(name, summary, links_and_riddles)
+# # # generate_summary_image(name, summary, client, image_dir)
+# # generate_riddle_images(links_and_riddles, client, image_dir)
+# # result
+# # print(page_content)
 
