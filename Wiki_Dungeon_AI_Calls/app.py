@@ -3,9 +3,11 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import os
 import openai
+from openai import OpenAI
 
 load_dotenv()  # This will load variables from .env into your environment
 openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", openai.api_key))
 
 def generate_riddle(text):
     """
@@ -17,9 +19,9 @@ def generate_riddle(text):
     Returns:
         str: A riddle related to the content
     """
-    prompt = f"Create a riddle based on this information: {text}"
+    prompt = f"You are a master riddle maker. I'm making a website that includes riddles of text summaries, allowing the user to guess the topic the riddle is about. Create a riddle that is the combination of everything in the attached summary. Do not include the name of the topic in the image. Do not put any text before or after the riddle.\n{text}"
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",  # or "gpt-4"
         messages=[
             {"role": "system", "content": "You are a helpful assistant."},
