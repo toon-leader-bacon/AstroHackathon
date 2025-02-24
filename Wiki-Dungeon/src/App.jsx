@@ -4,9 +4,9 @@ import Title from "./Title";
 import "@mantine/core/styles.css";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { createContext, useState } from "react";
+import Instruction from "./instruction";
 
 export const PageHistoryContext = createContext();
-import Instruction from "./instruction";
 
 const theme = createTheme({
     /** Put your mantine theme override here */
@@ -29,7 +29,6 @@ const router = createBrowserRouter([
 
 function App() {
     const [pageHistory, setPageHistory] = useState([]);
-    const [isLoading, setIsloading] = useState(false);
 
     return (
         <PageHistoryContext.Provider
@@ -39,9 +38,6 @@ function App() {
                     setPageHistory((prev) => [...prev, newPage]);
                 },
                 resetPageHistory: (val) => setPageHistory([val]),
-                isLoading,
-                setIsLoadingTrue: () => setIsloading(true),
-                setIsLoadingFalse: () => setIsloading(false),
             }}
         >
             <MantineProvider theme={theme}>

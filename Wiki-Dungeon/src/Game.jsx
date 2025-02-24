@@ -1,9 +1,8 @@
-import { Loader } from "@mantine/core";
-import React, { Suspense, useContext } from "react";
-import WikiEntry from "./WikiEntry";
+import React, { useContext } from "react";
+import WikiEntry from "./wikiEntry";
 import { PageHistoryContext } from "./App";
-import Loader2 from "./LoadingOverlay"
 import { useParams } from "react-router-dom";
+import Loadable from "./Loadable";
 
 async function scrape_wikipedia(pageTitle) {
     const response = await fetch(
@@ -20,17 +19,14 @@ async function scrape_wikipedia(pageTitle) {
         }
     );
     const pageData = await response.json();
-    console.log(pageData);
     return { pageData };
 }
 
-export function HydrateFallback() {
-    return <Loader className="loader" size="xl" color="blue" type="dots" />;
-}
+const LoadableWikiEntry = Loadable(WikiEntry)
 
 function Game() {
     const { wikipage } = useParams();
-    const { pageHistory, isLoading } = useContext(PageHistoryContext);
+    const { pageHistory } = useContext(PageHistoryContext);
     return (
         <div>
             <ul className="pageHistoryList">
@@ -39,15 +35,11 @@ function Game() {
                         <React.Fragment key={i}>
                             <li className="pageHistoryListItem">{value}</li>
                             {i < pageHistory.length - 1 && <span>➡️</span>}{" "}
-                            {/* Arrow emoji */}
                         </React.Fragment>
                     );
                 })}
             </ul>
-            {isLoading ? <Loader2 /> : null}
-            <Suspense fallback={<HydrateFallback />}>
-                <WikiEntry scrapedWikiAndAIImages={scrape_wikipedia(wikipage)} />
-            </Suspense>
+            <LoadableWikiEntry scrapedWikiAndAIImages={scrape_wikipedia(wikipage)} />
         </div>
     );
 }

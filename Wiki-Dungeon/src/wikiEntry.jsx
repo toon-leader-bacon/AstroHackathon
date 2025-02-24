@@ -1,28 +1,22 @@
-import React, { useContext, useEffect } from "react";
-import { Await, useLoaderData, useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { Await, useNavigate } from "react-router-dom";
 import "./WikiEntry.css";
 import { PageHistoryContext } from "./App";
 
 const WikiEntry = ({scrapedWikiAndAIImages}) => {
     const navigate = useNavigate();
-    const { setPageHistory, setIsLoadingTrue, setIsLoadingFalse } = useContext(PageHistoryContext);
+    const { setPageHistory } = useContext(PageHistoryContext);
 
     const handlePageClick = (pageName) => {
         setPageHistory(decodeURI(pageName));
-        setIsLoadingTrue();
         navigate(`/game/${encodeURIComponent(pageName)}`);
     };
-
-    // Use pageData if available, otherwise use placeholder
 
     return (
         <Await
             resolve={scrapedWikiAndAIImages}
             children={(pageDataValueOBJ) => {
                 const pageDataValue = pageDataValueOBJ.pageData;
-                useEffect(() => {
-                  setIsLoadingFalse()
-                }, [pageDataValue])
                 return (
                     <div className="wikiEntry-container">
                         <div className="top-half">
