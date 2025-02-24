@@ -1,3 +1,4 @@
+from functools import cache
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
@@ -48,7 +49,7 @@ def generate_riddle(text, client):
   riddle = response.choices[0].message.content
   return riddle
 
-
+@cache
 def scrape_wikipedia(url):
   # setup the api key
   client = setup_ai_call_api()
