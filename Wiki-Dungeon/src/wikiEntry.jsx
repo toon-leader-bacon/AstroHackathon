@@ -3,9 +3,8 @@ import { Await, useLoaderData, useNavigate } from "react-router-dom";
 import "./WikiEntry.css";
 import { PageHistoryContext } from "./App";
 
-const WikiEntry = () => {
+const WikiEntry = ({scrapedWikiAndAIImages}) => {
     const navigate = useNavigate();
-    const { pageDataGetter } = useLoaderData();
     const { setPageHistory, setIsLoadingTrue, setIsLoadingFalse } = useContext(PageHistoryContext);
 
     const handlePageClick = (pageName) => {
@@ -18,7 +17,7 @@ const WikiEntry = () => {
 
     return (
         <Await
-            resolve={pageDataGetter}
+            resolve={scrapedWikiAndAIImages}
             children={(pageDataValueOBJ) => {
                 const pageDataValue = pageDataValueOBJ.pageData;
                 useEffect(() => {

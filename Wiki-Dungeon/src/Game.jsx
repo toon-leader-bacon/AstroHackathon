@@ -1,11 +1,11 @@
 import { Loader } from "@mantine/core";
-import React, { useState, Suspense, useContext, useEffect } from "react";
-import WikiEntry from "./wikiEntry";
-import { useLoaderData, useParams } from "react-router-dom";
+import React, { Suspense, useContext } from "react";
+import WikiEntry from "./WikiEntry";
 import { PageHistoryContext } from "./App";
-import Loader2 from "./Loader"
+import Loader2 from "./LoadingOverlay"
+import { useParams } from "react-router-dom";
 
-async function scrape_wikipedia_promis(pageTitle) {
+async function scrape_wikipedia(pageTitle) {
     const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL_PY}\\scrape_wikipedia`,
         {
@@ -24,16 +24,12 @@ async function scrape_wikipedia_promis(pageTitle) {
     return { pageData };
 }
 
-export async function loadWikiDungenInfo(pageTitle) {
-    return { pageDataGetter: scrape_wikipedia_promis(pageTitle) };
-}
-
-// HydrateFallback is rendered while the client loader is running
 export function HydrateFallback() {
     return <Loader className="loader" size="xl" color="blue" type="dots" />;
 }
 
 function Game() {
+    const { wikipage } = useParams();
     const { pageHistory, isLoading } = useContext(PageHistoryContext);
     return (
         <div>
@@ -50,7 +46,7 @@ function Game() {
             </ul>
             {isLoading ? <Loader2 /> : null}
             <Suspense fallback={<HydrateFallback />}>
-                <WikiEntry />
+                <WikiEntry scrapedWikiAndAIImages={scrape_wikipedia(wikipage)} />
             </Suspense>
         </div>
     );

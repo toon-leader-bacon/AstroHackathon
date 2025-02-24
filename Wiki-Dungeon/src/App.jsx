@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Game, { HydrateFallback, loadWikiDungenInfo } from "./Game";
+import Game from "./Game";
 import Title from "./Title";
 import "@mantine/core/styles.css";
 import { createTheme, MantineProvider } from "@mantine/core";
@@ -22,11 +22,8 @@ const router = createBrowserRouter([
         element: <Instruction />,
     },
     {
-        path: "/game/:initialpage",
-        loader: ({ params }) => {
-            return loadWikiDungenInfo(params.initialpage);
-        },
-        Component: Game,
+        path: "/game/:wikipage",
+        element: <Game />,
     },
 ]);
 
@@ -47,7 +44,6 @@ function App() {
                 setIsLoadingFalse: () => setIsloading(false),
             }}
         >
-            {" "}
             <MantineProvider theme={theme}>
                 <RouterProvider router={router} />
             </MantineProvider>
